@@ -1,0 +1,45 @@
+USE master
+IF DB_ID ('TiendaOnline') IS NOT NULL
+ DROP DATABASE TiendaOnline;
+
+CREATE DATABASE TiendaOnline;
+
+USE TiendaOnline
+
+CREATE TABLE Categoria(
+id_categoria int PRIMARY KEY IDENTITY not null, 
+nombre varchar(50) not null
+)
+
+CREATE TABLE Productos (
+id_producto int PRIMARY KEY IDENTITY not null,
+nombre varchar(100) not null,
+descripcion NVARCHAR (MAX) not null,
+precio DECIMAL (18,2) not null,
+id_categoria INT not null, 
+FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria)
+)
+
+CREATE TABLE Clientes (
+id_cliente int PRIMARY KEY IDENTITY not null,
+nombre varchar(100) not null,
+email varchar(100) not null
+)
+
+CREATE TABLE Pedidos(
+id_pedido int PRIMARY KEY IDENTITY not null, 
+id_cliente int not null,
+fecha_pedido DATETIME not null,
+estado NVARCHAR(50) not null,
+FOREIGN KEY (id_cliente) REFERENCES Clientes (id_cliente) 
+)
+
+CREATE TABLE DetallesPedido(
+id_detalle int PRIMARY KEY IDENTITY not null, 
+id_pedido int not null,
+id_producto int not null,
+cantidad int not null, 
+precio_unitario DECIMAL (18,2) not null,
+FOREIGN KEY (id_pedido) REFERENCES Pedidos (id_pedido),
+FOREIGN KEY (id_producto) REFERENCES Productos (id_producto)
+)
